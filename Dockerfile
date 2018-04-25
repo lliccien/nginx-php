@@ -21,7 +21,7 @@ RUN DEBIAN_FRONTEND=noninteractive LC_ALL=en_US.UTF-8 add-apt-repository ppa:ond
 
 # Install miscellaneous
 RUN apt-get update && apt-get upgrade --yes && \
-	apt-get install --yes nano wget curl git 
+	apt-get install --yes nano wget curl git
 
 # Install php and libraries
 RUN apt-get update && apt-get upgrade --yes && \
@@ -50,14 +50,19 @@ RUN apt-get update && apt-get upgrade --yes && \
 		php-auth \
 		php-memcache \
 		php-imagick \
-		php-gettext 
+		php-gettext
 
-RUN apt-get update && apt-get upgrade --yes && \	
+RUN apt-get update && apt-get upgrade --yes && \
 	apt-get install --yes nginx \
 		memcached \
 		mcrypt \
 		imagemagick \
-		libruby 
+		libruby
+
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+	apt-get update && \
+	apt-get install -y nodejs
 
 # Cleaning
 RUN apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -67,7 +72,7 @@ RUN curl -sS https://getcomposer.org/installer | php && mv composer.phar /usr/lo
 
 
 # Confugure php.ini
-RUN sed -ri 's/^;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/5.6/fpm/php.ini && \ 
+RUN sed -ri 's/^;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/5.6/fpm/php.ini && \
 	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100M/g" /etc/php/5.6/fpm/php.ini && \
 	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 100M/g" /etc/php/5.6/fpm/php.ini && \
 	sed -i -e "s/memory_limit\s*=\s*128M/memory_limit = 1024M/g" /etc/php/5.6/fpm/php.ini && \
@@ -105,4 +110,4 @@ WORKDIR /home/deployer
 EXPOSE 80 443
 
 CMD sudo service php5.6-fpm start && \
-	sudo nginx -g "daemon off;" 
+	sudo nginx -g "daemon off;"
