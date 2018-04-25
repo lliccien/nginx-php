@@ -59,6 +59,11 @@ RUN apt-get update && apt-get upgrade --yes && \
 		imagemagick \
 		libruby 
 
+# Install Node.js
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
+	apt-get update && \
+	apt-get install -y nodejs
+
 # Cleaning
 RUN apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
