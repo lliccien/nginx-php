@@ -10,7 +10,7 @@ ENV SERVER_NAME=localhost \
 
 # Install basic
 RUN apt-get update && apt-get upgrade --yes && \
-	apt-get install --yes nano wget curl git sudo nginx gettext-base
+	apt-get install --yes nano wget curl git sudo nginx gettext-base memcached 
 
 # Install php and libraries
 RUN apt-get update && apt-get upgrade --yes && \
@@ -27,12 +27,13 @@ RUN apt-get update && apt-get upgrade --yes && \
 		php-pdo \
 		php-xml \
 		php-tokenizer \
-		php-date \
 		php-zip \
 		php-mbstring\
 		php-mysql \
 		php-pgsql \
 		php-sqlite3 \
+		php-memcached \
+		php-uploadprogress \
 		php-xdebug
 
 # Cleaning
