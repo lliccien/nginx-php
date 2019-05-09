@@ -34,23 +34,17 @@ RUN apt-get update && apt-get upgrade --yes && \
 		mysql-client
 
 
-# Install Composer
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && chmod +x /usr/local/bin/composer
-
 # Install Drush
 RUN wget https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && chmod +x drush.phar && mv drush.phar /usr/local/bin/drush
-
-# Install Drupal-Console
-RUN curl https://drupalconsole.com/installer -L -o drupal.phar && mv drupal.phar /usr/local/bin/drupal && chmod +x /usr/local/bin/drupal
 
 # Cleaning
 RUN apt-get -y autoremove && apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Confugure php.ini and www.conf
 RUN sed -ri 's/^;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g' /etc/php/7.2/fpm/php.ini && \ 
-	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 16M/g" /etc/php/7.2/fpm/php.ini && \
-	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 18M/g" /etc/php/7.2/fpm/php.ini && \
-	sed -i -e "s/memory_limit\s*=\s*128M/memory_limit = 512M/g" /etc/php/7.2/fpm/php.ini && \
+	sed -i -e "s/upload_max_filesize\s*=\s*2M/upload_max_filesize = 100/g" /etc/php/7.2/fpm/php.ini && \
+	sed -i -e "s/post_max_size\s*=\s*8M/post_max_size = 50M/g" /etc/php/7.2/fpm/php.ini && \
+	sed -i -e "s/memory_limit\s*=\s*128M/memory_limit = 1024M/g" /etc/php/7.2/fpm/php.ini && \
 	sed -i -e "s/max_execution_time\s*=\s*30/max_execution_time = 30/g" /etc/php/7.2/fpm/php.ini && \
 	sed -i -e "s/;extension=php_intl.dll/extension=php_intl.dll/g" /etc/php/7.2/fpm/php.ini && \
 	sed -i -e "s/;extension=php_pdo_mysql.dll/extension=php_pdo_mysql.dll/g" /etc/php/7.2/fpm/php.ini && \
