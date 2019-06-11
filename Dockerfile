@@ -33,6 +33,8 @@ RUN apt-get update && apt-get upgrade --yes && \
 		php-xdebug \
 		mysql-client
 
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer && chmod +x /usr/local/bin/composer
 
 # Install Drush
 RUN wget https://github.com/drush-ops/drush/releases/download/8.2.3/drush.phar && chmod +x drush.phar && mv drush.phar /usr/local/bin/drush
@@ -81,4 +83,5 @@ WORKDIR /var/www/html
 EXPOSE 80 
 
 CMD	service php7.2-fpm start && \
+	printenv | grep  "\<DATABASE.*\>" > .env && \
 	nginx -g 'daemon off;' 
