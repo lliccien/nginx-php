@@ -16,6 +16,9 @@ RUN apt-get update && apt-get upgrade --yes && \
 		php-gd \
 		php-opcache \
 		php-curl \
+		php-bcmath  \
+		php-xmlrpc \
+		php-soap \
 		php-intl \
 		php-date \
 		php-dom \
@@ -26,8 +29,6 @@ RUN apt-get update && apt-get upgrade --yes && \
 		php-zip \
 		php-mbstring\
 		php-mysql \
-		php-pgsql \
-		php-sqlite3 \
 		php-memcached \
 		php-uploadprogress \
 		php-xdebug \
